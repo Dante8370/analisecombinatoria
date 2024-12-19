@@ -7,6 +7,20 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+    appBar: AppBar(
+        // Usando o Center para centralizar o título
+        title: const Center(
+          child: Text(
+            'Análise combinatória',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 30,
+            ),
+          ),
+        ),
+        backgroundColor: const Color(0xFF00695C),
+      ),
       // Define a cor de fundo da tela
       backgroundColor: Colors.grey[300],
 
@@ -18,7 +32,7 @@ class HomeScreen extends StatelessWidget {
             Container(
               width: double.infinity, // Largura total da tela
               height: MediaQuery.of(context).size.height * 0.1, // 10% da altura da tela
-              color: const Color(0xFF00695C), // Cor verde escura
+              color: const Color.fromARGB(255, 0, 71, 63), // Cor verde escura
               alignment: Alignment.center, // Centraliza o texto
               child: Text(
                 'Qual calculadora você gostaria de utilizar?',
@@ -42,10 +56,7 @@ class HomeScreen extends StatelessWidget {
                     _buildButton(
                       context,
                       title: 'Permutação Simples', // Título do botão
-                      content: _buildFormula(
-                        left: "P", // Fórmula da permutação simples
-                        right: "n!",
-                      ),
+                      content: _buildPermutacaoSimples(),
                       onTap: () => Navigator.pushNamed(context, '/permutacaoSimples'), // Navega para a tela correspondente
                     ),
                     // Botão de "Permutação com Repetição"
@@ -59,11 +70,7 @@ class HomeScreen extends StatelessWidget {
                     _buildButton(
                       context,
                       title: 'Arranjo',
-                      content: _buildFormula(
-                        left: "A",
-                        right: "n!",
-                        denominator: "(n - p)!", // Denominador da fórmula
-                      ),
+                      content:  _buildArranjoFormula(),
                       onTap: () => Navigator.pushNamed(context, '/arranjo'),
                     ),
                     // Botão de "Arranjo Com Repetição"
@@ -89,17 +96,6 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
-            ),
-
-            // Barra de navegação inferior (NavBar)
-            Container(
-              height: 60, // Altura fixa
-              color: const Color(0xFF00695C), // Cor de fundo
-              alignment: Alignment.center, // Centraliza o conteúdo
-              child: const Text(
-                'NavBar Placeholder', // Texto temporário
-                style: TextStyle(color: Colors.white),
               ),
             ),
           ],
@@ -274,7 +270,7 @@ Widget buildExponent(String base, String exponent) {
                       ),
                     ),
                     Transform.translate(
-                      offset: const Offset(-6, -2), // Ajusta a posição do subscrito
+                      offset: const Offset(-14, -6), // Ajusta a posição do subscrito
                       child: const Text(
                         "n",
                         style: TextStyle(
@@ -326,4 +322,127 @@ Widget buildExponent(String base, String exponent) {
     );
   }
 
+  Widget _buildPermutacaoSimples() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Parte esquerda: Pₙ
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "P",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Transform.translate(
+                  offset: const Offset(-4, 6), // Ajusta a posição do subscrito
+                  child: const Text(
+                    "n",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        const Text(
+          " = ", // Símbolo de igualdade
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        // Parte direita: Numerador
+        const Text(
+          "n!",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
 }
+
+  // Método para criar a fórmula específica da Permutação com Repetição
+  Widget _buildArranjoFormula() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Parte esquerda: Pₙ^(a,b,c)
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "A",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Column(
+                  children: [
+                    Transform.translate(
+                      offset: const Offset(1, 6), // Ajusta a posição do subscrito
+                      child: const Text(
+                        "np",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+        const Text(
+          " = ", // Símbolo de igualdade
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        // Parte direita: Fração
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Numerador
+            const Text(
+              "n!",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            // Linha da fração
+            Container(
+              width: 60,
+              height: 2,
+              color: Colors.black,
+              margin: const EdgeInsets.symmetric(vertical: 2),
+            ),
+            // Denominador
+            const Text(
+              "(n - p)!",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
